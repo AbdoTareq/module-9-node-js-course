@@ -10,12 +10,12 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+// path is for highlighting the right tab in navigation bar
 exports.getProduct = (req, res, next) => {
   const id = req.params.productId;
   Product.findById(id, (product) => {
-    console.log(product);
+    res.render('shop/product-detail', { product: product, pageTitle: product.id, path: '/products' });
   });
-  res.redirect('/');
 };
 
 exports.getIndex = (req, res, next) => {
