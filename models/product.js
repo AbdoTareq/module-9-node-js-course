@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// a path to svae file
 const p = path.join(
   path.dirname(process.mainModule.filename),
   'data',
