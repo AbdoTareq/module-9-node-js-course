@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Cart = require('./cart');
 
 // a path to svae file
 const p = path.join(
@@ -48,16 +49,21 @@ module.exports = class Product {
       // if id exists then it's edit operation
       if (id) {
         const index = products.findIndex(p => p.id === id);
+        const product = products[index];
+
         if (index > -1) {
           // splice takes index and elements number to remove
           products.splice(index, 1);
         }
+        fs.writeFile(p, JSON.stringify(products), err => {
+          if (!err) {
+            Cart.deleteProduct(id, product.price);
+          } else
+            console.log(err);
+        });
       } else {
         console.log('id does not exist error in delete');
       }
-      fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      });
     });
   }
 
