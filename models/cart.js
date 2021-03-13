@@ -59,9 +59,9 @@ module.exports = class Cart {
         fs.readFile(p, (err, fileContent) => {
             if (err) {
                 console.log(err);
-                cb(null);
+                 cb(null);
             } else {
-                cb(JSON.parse(fileContent));
+                 cb(JSON.parse(fileContent));
             }
         });
     }
