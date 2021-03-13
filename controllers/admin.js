@@ -22,7 +22,6 @@ exports.getEditProduct = (req, res, next) => {
       console.log('product doesnot exist ', product);
       return res.redirect('/');
     }
-    console.log(product);
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
       path: '/admin/edit-product',
@@ -33,13 +32,27 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
+  console.log('addddddddddddddddddddddddddd');
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, imageUrl, description, price);
+  const product = new Product(null, title, imageUrl, description, price);
   product.save();
   return res.redirect('/');
+};
+
+exports.postEditProduct = (req, res, next) => {
+  console.log('editttttttttttttttttttttttt');
+
+  const id = req.body.id;
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const price = req.body.price;
+  const description = req.body.description;
+  const product = new Product(id, title, imageUrl, description, price);
+  product.save();
+  return res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {
