@@ -43,6 +43,24 @@ module.exports = class Product {
     });
   }
 
+  static delete(id) {
+    getProductsFromFile(products => {
+      // if id exists then it's edit operation
+      if (id) {
+        const index = products.findIndex(p => p.id === id);
+        if (index > -1) {
+          // splice takes index and elements number to remove
+          products.splice(index, 1);
+        }
+      } else {
+        console.log('id does not exist error in delete');
+      }
+      fs.writeFile(p, JSON.stringify(products), err => {
+        console.log(err);
+      });
+    });
+  }
+
   static fetchAll(cb) {
     getProductsFromFile(cb);
   }
