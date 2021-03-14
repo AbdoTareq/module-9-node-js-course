@@ -17,7 +17,7 @@ exports.getEditProduct = (req, res, next) => {
   }
   const id = req.params.productId;
   console.log(req.params);
-  Product.findById(id, product => {
+  Product.findByPk(id).then(product => {
     if (!product) {
       console.log('product doesnot exist ', product);
       return res.redirect('/');
@@ -28,7 +28,7 @@ exports.getEditProduct = (req, res, next) => {
       editing: editMode,
       product: product
     });
-  });
+  }).catch(err => console.log(err));
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -56,8 +56,21 @@ exports.postEditProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   const product = new Product(id, title, imageUrl, description, price);
-  product.save();
-  return res.redirect('/admin/products');
+  Product.findByPk(id).then(
+    product => {
+      product.title = title;
+      product.imageUrl = imageUrl;
+      product.price = price;
+      product.description = description;
+      return product.save()
+    }
+  ).then(
+    result => {
+      res.redirect('/admin/products');
+      console.log('updated',result);
+    }
+  ).catch(err => console.log(err))
+
 };
 
 exports.deleteProduct = (req, res, next) => {
