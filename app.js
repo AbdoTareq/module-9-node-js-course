@@ -24,7 +24,6 @@ app.use(errorController.get404);
 
 // this to map models to tables
 sequelize.sync().then(result => {
-    // console.log(result);
     app.listen(3000);
 }).catch(err => console.log(err))
 
