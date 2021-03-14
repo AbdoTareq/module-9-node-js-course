@@ -15,9 +15,12 @@ exports.getProducts = (req, res, next) => {
 // path is for highlighting the right tab in navigation bar
 exports.getProduct = (req, res, next) => {
   const id = req.params.productId;
-  Product.findById(id, (product) => {
-    res.render('shop/product-detail', { product: product, pageTitle: product.id, path: '/products' });
-  });
+  // as db will return array of 1 row
+  Product.findById(id).then(([product]) => {
+    res.render('shop/product-detail', { product: product[0], pageTitle: product.title, path: '/products' });
+  }).then(err =>
+    console.log(err)
+  )
 };
 
 exports.getIndex = (req, res, next) => {
