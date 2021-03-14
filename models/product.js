@@ -1,4 +1,4 @@
-const db = require('../util/database');
+const db = require('../util/database').default;
 
 module.exports = class Product {
   constructor(id, title, imageUrl, description, price) {
