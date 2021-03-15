@@ -18,7 +18,8 @@ exports.getEditProduct = (req, res, next) => {
   }
   const id = req.params.productId;
   console.log(req.params);
-  Product.findByPk(id).then(product => {
+  req.user.getProducts({ where: { id: id } }).then(products => {
+    const product = products[0];
     if (!product) {
       console.log('product doesnot exist ', product);
       return res.redirect('/');
@@ -90,7 +91,7 @@ exports.deleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then(products => {
+  req.user.getProducts().then(products => {
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',
