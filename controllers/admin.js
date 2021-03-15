@@ -33,12 +33,12 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  console.log('addddddddddddddddddddddddddd');
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product.create({
+  console.log('thissssssssssssssssssss ', req.user);
+  req.user.createProduct({
     title: title,
     price: price,
     imageUrl: imageUrl,
