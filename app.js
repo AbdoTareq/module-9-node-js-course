@@ -48,9 +48,7 @@ Product.belongsToMany(Cart, { through: CartItem });
 Cart.belongsToMany(Product, { through: CartItem });
 
 // this to map models to tables
-sequelize.sync({
-    force: true
-}).then(result => User.findByPk(1)).then(user => {
+sequelize.sync().then(result => User.findByPk(1)).then(user => {
     if (!user) {
         const temp = { name: 'Abdo', email: 'abc@mail.com' };
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', temp);
@@ -58,10 +56,7 @@ sequelize.sync({
     }
     return user;
 }
-).then(
-    user => {
-        console.log(user);
-        app.listen(3000);
-    }
-).catch(err => console.log(err))
+).then(user => user.createCart())
+    .then(cart => app.listen(3000))
+    .catch(err => console.log(err))
 
