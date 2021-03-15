@@ -8,6 +8,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 const errorController = require('./controllers/error');
 
@@ -33,10 +35,9 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-
 app.use(errorController.get404);
 
-
+// Tables relations
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 
@@ -47,16 +48,23 @@ Cart.belongsTo(User);
 Product.belongsToMany(Cart, { through: CartItem });
 Cart.belongsToMany(Product, { through: CartItem });
 
+User.hasMany(Order);
+Order.belongsTo(User);
+Product.belongsToMany(Order, { through: OrderItem });
+
 // this to map models to tables
-sequelize.sync().then(result => User.findByPk(1)).then(user => {
-    if (!user) {
-        const temp = { name: 'Abdo', email: 'abc@mail.com' };
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', temp);
-        return User.create(temp);
+sequelize
+    // .sync()
+    .sync({ force: true })
+    .then(result => User.findByPk(1)).then(user => {
+        if (!user) {
+            const temp = { name: 'Abdo', email: 'abc@mail.com' };
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', temp);
+            return User.create(temp);
+        }
+        return user;
     }
-    return user;
-}
-).then(user => user.createCart())
+    ).then(user => user.createCart())
     .then(cart => app.listen(3000))
     .catch(err => console.log(err))
 
