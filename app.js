@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const errorController = require('./controllers/error');
 
@@ -32,15 +34,23 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 
-
 app.use(errorController.get404);
 
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+// many to many needs seperate table which in this case CartItem
+Product.belongsToMany(Cart, { through: CartItem });
+Cart.belongsToMany(Product, { through: CartItem });
+
 // this to map models to tables
-sequelize.sync().then(result => User.findByPk(1)).then(user => {
+sequelize.sync({
+    force: true
+}).then(result => User.findByPk(1)).then(user => {
     if (!user) {
         const temp = { name: 'Abdo', email: 'abc@mail.com' };
         console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', temp);
