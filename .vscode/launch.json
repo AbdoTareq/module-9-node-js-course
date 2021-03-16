@@ -15,7 +15,7 @@
             "restart": true,
             "runtimeExecutable": "nodemon",
             "smartStep": true,
-            "console": "integratedTerminal",
+            // "console": "integratedTerminal",
         }
     ]
 }
