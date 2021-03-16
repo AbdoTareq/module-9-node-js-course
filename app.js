@@ -48,14 +48,14 @@ Cart.belongsTo(User);
 Product.belongsToMany(Cart, { through: CartItem });
 Cart.belongsToMany(Product, { through: CartItem });
 
-User.hasMany(Order);
 Order.belongsTo(User);
-Product.belongsToMany(Order, { through: OrderItem });
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
 
 // this to map models to tables
 sequelize
-    // .sync()
-    .sync({ force: true })
+    .sync()
+    // .sync({ force: true })
     .then(result => User.findByPk(1)).then(user => {
         if (!user) {
             const temp = { name: 'Abdo', email: 'abc@mail.com' };

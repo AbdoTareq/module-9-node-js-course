@@ -89,16 +89,15 @@ exports.postOrder = (req, res, next) => {
     fetchedCart = cart;
     return cart.getProducts();
   }).then(products => {
-    req.user.createOrder().then(
-      order => {
-        return order.addProducts(
-          products.map(product => {
-            product.orderItem = { quantity: product.cartItem.quantity }
-            return product;
-          })
-        )
-      }
-    )
+    req.user.createOrder().then(order => {
+      return order.addProducts(
+        products.map(product => {
+          product.orderItem = { quantity: product.cartItem.quantity }
+          return product;
+        })
+      );
+    })
+      .catch(err => console.log(err));
   })
     .then(result =>
       fetchedCart.setProducts(null)
@@ -110,15 +109,12 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  res.render('shop/orders', {
-    path: '/orders',
-    pageTitle: 'Your Orders'
-  });
-};
-
-exports.getCheckout = (req, res, next) => {
-  res.render('shop/checkout', {
-    path: '/checkout',
-    pageTitle: 'Checkout'
-  });
+  req.user.getOrders({ include: ['products'] })
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orders',
+        pageTitle: 'Your Orders',
+        orders: orders
+      });
+    }).catch(err => console.log(err));
 };
