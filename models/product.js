@@ -23,6 +23,7 @@ class product {
       console.log(result);
     }).catch(err => console.log(err));;
   }
+
   static fetchAll() {
     const db = getDb();
     return db.collection('products').find().toArray().then(products => {
@@ -35,6 +36,13 @@ class product {
     return db.collection('products').find({ _id: new mongoDb.ObjectId(id) }).next().then(product => {
       console.log(product);
       return product;
+    }).catch(err => console.log(err));;
+  }
+
+  static deleteById(id) {
+    const db = getDb();
+    return db.collection('products').deleteOne({ _id: new mongoDb.ObjectId(id) }).then(result => {
+      console.log(result);
     }).catch(err => console.log(err));;
   }
 }
