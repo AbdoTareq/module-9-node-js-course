@@ -34,7 +34,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart().then(cart => cart.getProducts())
+  req.user.getCart()
     .then(products => {
       res.render('shop/cart', {
         path: '/cart',
@@ -48,7 +48,10 @@ exports.postCart = (req, res, next) => {
   const productId = req.body.productId;
   Product.findById(productId).then(product => {
     return req.user.addToCart(product);
-  }).then(result => console.log(result)).catch(err => console.log(err));
+  }).then(result => {
+    console.log(result);
+    res.redirect('/cart');
+  }).catch(err => console.log(err));
   // let cart;
   // let newQuantity = 1;
   // req.user.getCart().then(fetchedCart => {
