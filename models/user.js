@@ -41,7 +41,20 @@ class User {
             });
     }
 
+    deleteCartItem(productId) {
+        console.log('beeeeeeeeeeee', this.cart.items);
+        const updatedCartItems = this.cart.items.filter(p => {
+            return p.productId.toString() !== productId.toString()
+        });
+        console.log('affffffff', this.cart.items);
 
+        const db = getDb();
+        return db.collection('users').updateOne(
+            { _id: new ObjectId(this._id) },
+            { $set: { cart: { items: updatedCartItems } } }
+        ).then(result => {
+        }).catch(err => console.log(err));
+    }
 
     addToCart(product) {
         const cartProductIndex = this.cart.items.findIndex(cartProduct => {

@@ -52,39 +52,13 @@ exports.postCart = (req, res, next) => {
     console.log(result);
     res.redirect('/cart');
   }).catch(err => console.log(err));
-  // let cart;
-  // let newQuantity = 1;
-  // req.user.getCart().then(fetchedCart => {
-  //   cart = fetchedCart;
-  //   return fetchedCart.getProducts({ where: { id: productId } });
-  // }).then(
-  //   products => {
-  //     let product;
-  //     if (products.length > 0) {
-  //       product = products[0];
-  //     }
-  //     if (product) {
-  //       const oldQty = product.cartItem.quantity;
-  //       newQuantity = oldQty + 1;
-  //       return product;
-  //     }
-  //     return Product.findByPk(productId);
-  //   }
-  // ).then(
-  //   prod => {
-  //     return cart.addProduct(prod, { through: { quantity: newQuantity } })
-  //   }
-  // ).then(_ => res.redirect('/cart')).catch(err => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const productId = req.body.productId;
-  req.user.getCart().then(cart => {
-    return cart.getProducts({ where: { id: productId } });
-  }).then(products => {
-    const product = products[0];
-    return product.cartItem.destroy();
-  }).then(result =>
+  console.log('prooooooooooo', productId);
+
+  req.user.deleteCartItem(productId).then(result =>
     res.redirect('/cart')
   ).catch(err => console.log(err));
 };
