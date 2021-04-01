@@ -75,7 +75,8 @@ class User {
     }
 
     getOrders() {
-
+        const db = getDb();
+        return db.collection('orders').find({ 'user._id': ObjectId(this._id) }).toArray();
     }
 
     addToCart(product) {
