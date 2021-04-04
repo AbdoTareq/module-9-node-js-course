@@ -77,10 +77,12 @@ exports.postOrder = (req, res, next) => {
         products: products,
       });
       return order.save();
-    }
-    ).then(result => {
+    })
+    .then(result => req.user.clearCart())
+    .then(result => {
       res.redirect('/orders')
-    }).catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
