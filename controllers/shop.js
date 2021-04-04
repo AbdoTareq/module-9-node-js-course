@@ -12,13 +12,13 @@ exports.getProducts = (req, res, next) => {
 };
 
 // path is for highlighting the right tab in navigation bar
-exports. getProduct = (req, res, next) => {
+exports.getProduct = (req, res, next) => {
   const id = req.params.productId;
   // as db will return array of 1 row
   // findById beacme findByPk
   Product.findById(id).then(product => {
     res.render('shop/product-detail', { product: product, pageTitle: product.title, path: '/products' });
-  }).then(err => 
+  }).then(err =>
     console.log(err)
   )
 };
