@@ -81,7 +81,7 @@ exports.deleteProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   Product.find()
     // .select('title price -._id')
-    .populate('userId', 'name ema')
+    .populate('userId', 'name')
     .then(products => {
       console.log(products);
       res.render('admin/products', {
