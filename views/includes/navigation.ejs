@@ -25,12 +25,17 @@
                     <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
                     </a>
                 </li>
-            <% } %>
+                <% } %>
         </ul>
         <ul class="main-header__item-list">
             <li class="main-header__item">
                 <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
             </li>
+            <form action="/logout" method="post">
+                <li class="main-header__item">
+                    <button type="submit">Logout</button>
+                </li>
+            </form>
         </ul>
     </nav>
 </header>
