@@ -18,7 +18,10 @@ exports.getProduct = (req, res, next) => {
   // as db will return array of 1 row
   // findById beacme findByPk
   Product.findById(id).then(product => {
-    res.render('shop/product-detail', { product: product, pageTitle: product.title, path: '/products' });
+    res.render('shop/product-detail', {
+      product: product, pageTitle: product.title,
+      path: '/products', isAuthenticated: req.session.isLoggedIn
+    });
   }).then(err =>
     console.log(err)
   )
