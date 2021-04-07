@@ -45,7 +45,8 @@ app.use((req, res, next) => {
     }).catch(err => console.log(err));
 });
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
+    // protect routes to grant access for authenticated users
     res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
     next()
