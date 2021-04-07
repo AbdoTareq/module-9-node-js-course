@@ -88,13 +88,12 @@ exports.postSignup = (req, res, next) => {
       return user.save();
     })
   }).then(result => {
+    res.redirect('/login');
     return transporter.sendMail({
       from: 'abdotarekfathy@gmail.com',
       to: email,
       subject: 'Signup succeeded',
       html: '<h1> You have succeeded in signing up <h1>'
-    }).then(result => {
-      res.redirect('/login');
     })
   }).catch(err => console.log(err));
 };
