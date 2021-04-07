@@ -19,15 +19,26 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('60688fa2849277694e2c7748').then(user => {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    req.session.save((err) => {
-      if (err) {
-        console.log(err);
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email: email }).then(user => {
+    if (!user) {
+      console.log('no exisit user');
+      return res.redirect('/login');
+    }
+    bcrypt.compare(password, user.password).then(doMatch => {
+      console.log(doMatch);
+      if (doMatch) {
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save((err) => {
+          console.log(err);
+          res.redirect('/');
+        });
       }
-      res.redirect('/');
-    });
+      res.redirect('/login');
+    })
   }).catch(err => console.log(err));
 };
 
@@ -36,11 +47,11 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
-  User.findOne({ 'email': email }).then(userDoc => {
+  User.findOne({ email: email }).then(userDoc => {
     if (userDoc) {
       return res.redirect('/signup');
     }
-    return bcrypt.hash(password, 2).then(hashedPassword => {
+    return bcrypt.hash(password, 12).then(hashedPassword => {
       console.log(hashedPassword);
       const user = User({
         email: email,
