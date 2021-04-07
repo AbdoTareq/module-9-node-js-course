@@ -19,7 +19,7 @@ exports.getProduct = (req, res, next) => {
   Product.findById(id).then(product => {
     res.render('shop/product-detail', {
       product: product, pageTitle: product.title,
-      path: '/products', isAuthenticated: req.session.isLoggedIn
+      path: '/products',
     });
   }).then(err =>
     console.log(err)
@@ -32,7 +32,7 @@ exports.getIndex = (req, res, next) => {
       prods: products,
       pageTitle: 'Shop',
       path: '/',
-      isAuthenticated: req.session.isLoggedIn
+
     });
   }).catch(err => console.log(err));
 };
@@ -44,7 +44,7 @@ exports.getCart = (req, res, next) => {
         path: '/cart',
         pageTitle: 'Your Cart',
         products: user.cart.items,
-        isAuthenticated: req.session.isLoggedIn
+
       });
     }).catch(err => console.log(err));
 };
@@ -97,7 +97,7 @@ exports.getOrders = (req, res, next) => {
         path: '/orders',
         pageTitle: 'Your Orders',
         orders: orders,
-        isAuthenticated: req.session.isLoggedIn
+
       });
     }).catch(err => console.log(err));
 };
