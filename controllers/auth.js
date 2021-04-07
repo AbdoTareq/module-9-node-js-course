@@ -10,11 +10,18 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  console.log(req.session.isLoggedIn);
+  let errorMessage = req.flash('error');
+  console.log(errorMessage);
+  if (errorMessage.length > 0) {
+    errorMessage = errorMessage[0];
+  } else {
+    errorMessage = null;
+  }
+
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    errorMessage: req.flash('error'),
+    errorMessage: errorMessage,
   });
 };
 
