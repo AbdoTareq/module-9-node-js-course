@@ -56,7 +56,7 @@ exports.postEditProduct = (req, res, next) => {
   const description = req.body.description;
 
   Product.findById(id).then(product => {
-    if (product.userId !== req.user._id) {
+    if (product.userId.toString() !== req.user._id.toString()) {
       console.log('notttttttt Allllllllllllowed');
       return res.redirect('/');
     }
