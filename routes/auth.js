@@ -1,5 +1,6 @@
 const express = require('express');
 const { check, body } = require('express-validator');
+const User = require('../models/user');
 
 const authController = require('../controllers/auth');
 
@@ -14,10 +15,11 @@ router.post('/login', authController.postLogin);
 router.post('/signup', [
     check('email').isEmail().withMessage('Please enter a valid email')
         .custom((value, { req }) => {
-            if (value === 'abdotarekfathy@gmail.com') {
-                throw Error('personal mail');
-            }
-            return true;
+            return User.findOne({ email: value }).then(userDoc => {
+                if (userDoc) {
+                    return Promise.reject('mail exisits');
+                }
+            })
         }),
     body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric(),
     body('confirmPassword').custom((value, { req }) => {
