@@ -12,13 +12,21 @@ router.get('/signup', authController.getSignup);
 router.post('/login', authController.postLogin);
 
 router.post('/signup', [
-    check('email').isEmail().withMessage('Please enter a valid email').custom((value, { req }) => {
-        if (value === 'abdotarekfathy@gmail.com') {
-            throw Error('personal mail');
+    check('email').isEmail().withMessage('Please enter a valid email')
+        .custom((value, { req }) => {
+            if (value === 'abdotarekfathy@gmail.com') {
+                throw Error('personal mail');
+            }
+            return true;
+        }),
+    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric(),
+    body('confirmPassword').custom((value, { req }) => {
+        if (value !== req.body.password) {
+            throw Error('password has to match');
         }
         return true;
     }),
-    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric()
+
 ], authController.postSignup);
 
 router.post('/logout', authController.postLogout);
