@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { validationResult } = require('express-validator');
 
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
@@ -73,6 +74,15 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pageTitle: 'Signup',
+      errorMessage: errors.array(),
+    });
+  }
 
   User.findOne({ email: email }).then(userDoc => {
     if (userDoc) {
@@ -157,7 +167,7 @@ exports.postReset = (req, res, next) => {
 
 exports.getNewPassword = (req, res, next) => {
   const token = req.params.token;
-  User.findOne({ resetToken: token,resetTokenExpiration: { $gt: Date.now() } }).then(user => {
+  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } }).then(user => {
     let errorMessage = req.flash('error');
     console.log(errorMessage);
     if (errorMessage.length > 0) {
