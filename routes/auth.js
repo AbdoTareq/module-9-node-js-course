@@ -11,12 +11,12 @@ router.get('/login', authController.getLogin);
 router.get('/signup', authController.getSignup);
 
 router.post('/login', [
-    body('email','Enter valid mail').isEmail(),
-    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric(),
+    body('email', 'Enter valid mail').isEmail().trim().normalizeEmail(),
+    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric().trim(),
 ], authController.postLogin);
 
 router.post('/signup', [
-    check('email').isEmail().withMessage('Please enter a valid email')
+    check('email').isEmail().withMessage('Please enter a valid email').trim().normalizeEmail()
         .custom((value, { req }) => {
             return User.findOne({ email: value }).then(userDoc => {
                 if (userDoc) {
@@ -24,8 +24,8 @@ router.post('/signup', [
                 }
             })
         }),
-    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric(),
-    body('confirmPassword').custom((value, { req }) => {
+    body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric().trim(),
+    body('confirmPassword').trim().custom((value, { req }) => {
         if (value !== req.body.password) {
             throw Error('password has to match');
         }
