@@ -11,7 +11,7 @@ router.get('/login', authController.getLogin);
 router.get('/signup', authController.getSignup);
 
 router.post('/login', [
-    body('mail','Enter valid mail').isEmail(),
+    body('email','Enter valid mail').isEmail(),
     body('password', 'Ente valid password').isLength({ min: 5 }).isAlphanumeric(),
 ], authController.postLogin);
 
