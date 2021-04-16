@@ -43,8 +43,11 @@ exports.getSignup = (req, res, next) => {
     errorMessage: errorMessage,
     oldInput: {
       email: '',
-      password:'',
-      confirmPassword: ''}
+      password: '',
+      confirmPassword: ''
+    },
+    validationErrors: [],
+
   });
 };
 
@@ -94,9 +97,11 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldInput: {
-      email: email,
-      password:password,
-      confirmPassword: req.body.confirmPassword}
+        email: email,
+        password: password,
+        confirmPassword: req.body.confirmPassword
+      },
+      validationErrors: errors.array(),
     });
   }
   return bcrypt.hash(password, 12).then(hashedPassword => {
