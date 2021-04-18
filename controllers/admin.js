@@ -109,7 +109,10 @@ exports.postEditProduct = (req, res, next) => {
       result => {
         res.redirect('/admin/products');
         console.log('updated', result);
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        console.log(err);
+        res.redirect('/500');
+      })
   })
 };
 
