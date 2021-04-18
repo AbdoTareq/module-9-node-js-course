@@ -4,6 +4,7 @@ const session = require('express-session');
 const MongodbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const User = require('./models/user');
 
@@ -22,9 +23,11 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');  
+const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
+// for extract images & files from request
+app.use(multer({ dest: 'image' }).single('image'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
