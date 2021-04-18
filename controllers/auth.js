@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { validationResult } = require('express-validator');
+const errorController = require('./error');
 
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
@@ -109,7 +110,9 @@ exports.postLogin = (req, res, next) => {
         validationErrors: [],
       });
     })
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.postSignup = (req, res, next) => {
@@ -146,7 +149,9 @@ exports.postSignup = (req, res, next) => {
       subject: 'Signup succeeded',
       html: '<h1> You have succeeded in signing up <h1>'
     })
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.postLogout = (req, res, next) => {
@@ -200,7 +205,9 @@ exports.postReset = (req, res, next) => {
         <p> click here <a href="http://localhost:3000/reset/${token}">link </a> to set a new password</p>
         `
       });
-    }).catch(err => console.log(err));
+    }).catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
   })
 };
 
@@ -223,7 +230,9 @@ exports.getNewPassword = (req, res, next) => {
     });
 
 
-  }).catch(err => console.log(err));;
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 }
 
 exports.postNewPassword = (req, res, next) => {
@@ -246,6 +255,8 @@ exports.postNewPassword = (req, res, next) => {
       return resetUser.save();
     }).then(result =>
       res.redirect('/login')
-    ).catch(err => console.log(err));;
+    ).catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
   })
 }

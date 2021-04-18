@@ -1,11 +1,6 @@
 const Product = require('../models/product');
 const { validationResult } = require('express-validator');
-
-const handleErrorFun = (err, next) => {
-  const error = Error(err);
-  error.httpStatusCode = 500;
-  return next(error);
-}
+const errorController = require('./error');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -41,7 +36,7 @@ exports.getEditProduct = (req, res, next) => {
       validationErrors: []
     });
   }).catch(err =>
-    handleErrorFun(err, next)
+    errorController.handleErrorFun(err, next)
   );
 };
 
@@ -70,7 +65,7 @@ exports.postAddProduct = (req, res, next) => {
       console.log(result);
       res.redirect('/admin/products')
     }).catch(err =>
-      handleErrorFun(err, next)
+      errorController.handleErrorFun(err, next)
     );
 };
 
@@ -119,7 +114,7 @@ exports.postEditProduct = (req, res, next) => {
         res.redirect('/admin/products');
         console.log('updated', result);
       }).catch(err => {
-        handleErrorFun(err, next);
+        errorController.handleErrorFun(err, next)
       })
   })
 };
@@ -132,7 +127,9 @@ exports.deleteProduct = (req, res, next) => {
     () => {
       res.redirect('/admin/products')
     }
-  ).catch(err => console.log(err));
+  ).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.getProducts = (req, res, next) => {
@@ -146,5 +143,7 @@ exports.getProducts = (req, res, next) => {
         path: '/admin/products',
 
       });
-    }).catch(err => console.log(err));
+    }).catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
 };

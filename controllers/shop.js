@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
+const errorController = require('./error');
 
 exports.getProducts = (req, res, next) => {
   Product.find().then(products => {
@@ -8,7 +9,9 @@ exports.getProducts = (req, res, next) => {
       pageTitle: 'All Products',
       path: '/products',
     });
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 // path is for highlighting the right tab in navigation bar
@@ -34,7 +37,9 @@ exports.getIndex = (req, res, next) => {
       path: '/',
 
     });
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.getCart = (req, res, next) => {
@@ -46,7 +51,9 @@ exports.getCart = (req, res, next) => {
         products: user.cart.items,
 
       });
-    }).catch(err => console.log(err));
+    }).catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
 };
 
 exports.postCart = (req, res, next) => {
@@ -56,7 +63,9 @@ exports.postCart = (req, res, next) => {
   }).then(result => {
     console.log(result);
     res.redirect('/cart');
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
@@ -65,7 +74,9 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
   req.user.deleteCartItem(productId).then(result =>
     res.redirect('/cart')
-  ).catch(err => console.log(err));
+  ).catch(err =>
+    errorController.handleErrorFun(err, next)
+  );
 };
 
 exports.postOrder = (req, res, next) => {
@@ -87,7 +98,9 @@ exports.postOrder = (req, res, next) => {
     .then(result => {
       res.redirect('/orders')
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
 };
 
 exports.getOrders = (req, res, next) => {
@@ -99,5 +112,7 @@ exports.getOrders = (req, res, next) => {
         orders: orders,
 
       });
-    }).catch(err => console.log(err));
+    }).catch(err =>
+      errorController.handleErrorFun(err, next)
+    );
 };

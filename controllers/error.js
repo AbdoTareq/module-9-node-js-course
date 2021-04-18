@@ -13,3 +13,9 @@ exports.get500 = (req, res, next) => {
     isAuthenticated: req.session.isLoggedIn,
   });
 };
+
+exports.handleErrorFun = (err, next) => {
+  const error = Error(err);
+  error.httpStatusCode = 500;
+  return next(error);
+}
